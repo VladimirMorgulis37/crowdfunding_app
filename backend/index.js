@@ -6,6 +6,9 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3001; // а портики уже настроены!
 
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
+
 const db = require("./app/models");
 const { initializeAnalytics } = require('firebase/analytics');
 const Role = db.Role;
