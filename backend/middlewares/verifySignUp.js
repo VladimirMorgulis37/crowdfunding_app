@@ -49,3 +49,10 @@ checkRolesExisted = (req, res, next) => {
     }
     next();
 }; // в этом надо разобраться.. меня уже подташнивает
+
+const verifySignUp = {
+    checkDuplicateUsernameOrEmail,
+    checkRolesExisted
+};
+
+module.exports = verifySignUp // умно сделали - 2 проверочки запихнули в одну и экспортнули..
