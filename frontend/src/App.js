@@ -5,10 +5,11 @@ import FooterApp from './components/FooterApp';
 
 function App() {
   return (
-    <div className="wrapper">
-      <HeaderApp />
-      <FooterApp />
-    </div>
+    // <div className="wrapper">
+    //   <HeaderApp />
+    //   <FooterApp />
+    // </div>
+    <></>
   );
 }
 
