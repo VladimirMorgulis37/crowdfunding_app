@@ -7,7 +7,59 @@ const app = express();
 const port = process.env.PORT || 3001; // а портики уже настроены!
 
 const db = require("./app/models");
+const { initializeAnalytics } = require('firebase/analytics');
 const Role = db.Role;
+
+db.mongoose
+  .connect('mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}', {
+    useNewUrlParser: true, // чтобы не вылезало предупреждение об устаревшем парсере
+    useUnifiedTopology: true // использовать new server discovery and monitoring engine O_o
+  })
+  .then(() => {
+    console.log("Successfully connect to MongoDB.");
+    initial(); // что это?
+  })
+  .catch(err => {
+    console.log("Connection error", err);
+    process.exit(); // ошибочки
+  });
+
+  function initial() { // инициализируем роли
+    Role.estimatedDocumentCount((err, count) => {
+      if (!err && count === 0) {
+        new Role({
+          name: "user"
+        }).save(err => {
+          if (err) {
+            console.log("error", err);
+          }
+
+          console.log("added 'user' to roles colleciton");
+        });
+
+        new Role({
+          name: "moderator"
+        }).save(err => {
+          if (err) {
+            console.log("error", err);
+          }
+
+          console.log("added 'moderator' to roles colleciton");
+        });
+
+        new Role({
+          name: "admin"
+        }).save(err => {
+          if (err) {
+            console.log("error", err);
+          }
+
+          console.log("added 'admin' to roles colleciton");
+        });
+
+    }
+  });
+  }
 // const pool = new Pool({ // это удаляется, я перешёл на монго дб
 //     user: process.env.DB_USER,
 //     host: process.env.DB_HOST,
