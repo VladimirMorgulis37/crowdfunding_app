@@ -25,7 +25,7 @@ const Role = db.role;
 const dbConfig = require("./config/db.config");
 
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
+  .connect("mongodb+srv://randomcat149:eyGPF1iHviKdrthO@cluster0.pjcahnm.mongodb.net/")
   .then(() => {
     console.log("Successfully connect to MongoDB.");
     initial(); // что это?

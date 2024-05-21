@@ -2,31 +2,39 @@ const db = require("../models"); // интересный факт мы треб�
 const ROLES = db.ROLES;
 const User = db.user;
 
-checkDuplicateUsernameOrEmail = (req, res, next) => {
-    // Username
-    User.findOne({username: req.body.username}).exec()
-        .then(user => {
-            if (user){
-                res.status(400).send({message: "Failed! Username is already in use!"});
-                return Promise.reject();
-            }
-            
-            return User.FindOne({email: req.body.email}).exec();
-        })
-        .then(user => {
-            if (user){
-                res.status(400).send({message: "Failed! Email is already in use!"});
-                return;
-            }
-            
-            next();
-        })
-        .catch(err => {
-            if (err) {
-                res.status(500).send({ message: "ошибка" });
-            }
-    });
-    };
+const checkDuplicateUsernameOrEmail = (req, res, next) => {
+    // Check for required fields
+    if (!req.body.username || !req.body.email) {
+      res.status(400).send({ message: "Username and email are required!" });
+      return;
+    }
+  
+    // Check for duplicate username
+    User.findOne({ username: req.body.username }).exec()
+      .then(user => {
+        if (user) {
+          res.status(400).send({ message: "Failed! Username is already in use!" });
+          return Promise.reject('UsernameExists'); // Indicate the reason for rejection
+        }
+  
+        // Check for duplicate email
+        return User.findOne({ email: req.body.email }).exec();
+      })
+      .then(user => {
+        if (user) {
+          res.status(400).send({ message: "Failed! Email is already in use!" });
+          return Promise.reject('EmailExists'); // Indicate the reason for rejection
+        }
+  
+        next(); // Proceed to the next middleware
+      })
+      .catch(err => {
+        // Handle only unexpected errors here
+        if (err !== 'UsernameExists' && err !== 'EmailExists') {
+          res.status(500).send({ message: "An error occurred while checking for duplicates." });
+        }
+      });
+  };
 
 checkRolesExisted = (req, res, next) => {
     if (req.body.roles) {
