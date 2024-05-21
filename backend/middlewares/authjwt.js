@@ -25,7 +25,7 @@ verifyToken = (req, res, next) => {
 isAdmin = (req, res, next) => {
     User.findById(req.userId).exec((err, user) => {
         if (err) {
-            res.status(500).send({ message: err });
+            res.status(500).send({ message: "пенис" });
             return;
         }
         Role.find (
@@ -34,7 +34,7 @@ isAdmin = (req, res, next) => {
             },
             (err, roles) => {
                 if (err) {
-                    res.status(500).send({ message:err });
+                    res.status(500).send({ message: "пенис" });
                     return;
                 }
 
@@ -55,7 +55,7 @@ isAdmin = (req, res, next) => {
 isModerator = (req, res, next) => {
     User.findById(req.userId).exec((err, user) => {
         if (err) {
-            res.status(500).send({ message: err });
+            res.status(500).send({ message: "пенис" });
             return;
         }
         Role.find (
@@ -64,7 +64,7 @@ isModerator = (req, res, next) => {
             },
             (err, roles) => {
                 if (err) {
-                    res.status(500).send({ message:err });
+                    res.status(500).send({ message: "пенис" });
                     return;
                 }
 
