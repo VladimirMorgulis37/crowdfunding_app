@@ -1,0 +1,33 @@
+import axios from 'axios';
+
+const API_URL = 'http://localhost:3001/api/campaigns/';
+
+const createCampaign = (title, description, cost) => {
+  return axios.post(API_URL, { title, description, cost });
+};
+
+const getAllCampaigns = () => {
+  return axios.get(API_URL);
+};
+
+const getCampaignById = (id) => {
+  return axios.get(API_URL + id);
+};
+
+const updateCampaign = (id, title, description, cost) => {
+  return axios.put(API_URL + id, { title, description, cost });
+};
+
+const deleteCampaign = (id) => {
+  return axios.delete(API_URL + id);
+};
+
+const CampaignService = {
+  createCampaign,
+  getAllCampaigns,
+  getCampaignById,
+  updateCampaign,
+  deleteCampaign,
+};
+
+export default CampaignService;

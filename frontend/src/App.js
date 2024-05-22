@@ -12,6 +12,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import Campaigns from './components/Campaigns';
 
 const App = () => {
   // State management for user roles and current user
@@ -45,6 +46,11 @@ const App = () => {
           bezKoder
         </Link>
         <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to={"/campaigns"} className="nav-link">
+              Campaign
+            </Link>
+          </li>
           <li className="nav-item">
             <Link to={"/home"} className="nav-link">
               Home
@@ -102,6 +108,7 @@ const App = () => {
                 Sign Up
               </Link>
             </li>
+          
           </div>
         )}
       </nav>
@@ -116,6 +123,7 @@ const App = () => {
           <Route path="/user" element={<BoardUser />} />
           <Route path="/mod" element={<BoardModerator />} />
           <Route path="/admin" element={<BoardAdmin />} />
+          <Route path="/campaigns" element={<Campaigns />} />
         </Routes>
       </div>
     </div>
