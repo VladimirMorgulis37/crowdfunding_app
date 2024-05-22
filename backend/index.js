@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3001; // а портики уже настроены!
 
 var corsOptions = {
-  origin: "http://localhost:3001" // чтобы токо отсюда можно было принимать запросы
+  origin: "http://localhost:3002" // чтобы токо отсюда можно было принимать запросы
 }
 
 app.use(cors(corsOptions));
