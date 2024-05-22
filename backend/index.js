@@ -14,9 +14,10 @@ app.use(cors(corsOptions));
 app.use(express.json()); // парсим json
 app.use(express.urlencoded({ extended: true })); // парсим запросы content-type - application/x-www-form-urlencoded
 
+const campaignRoutes = require("./routes/campaign.routes");
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
-
+app.use("/api/campaigns", campaignRoutes);
 const db = require("./models");
 const { initializeAnalytics } = require('firebase/analytics');
 const Role = db.role;
