@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CampaignService from '../services/campaign.service';
+import AuthService from '../services/auth.service';
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -8,9 +9,14 @@ const Campaigns = () => {
   const [cost, setCost] = useState('');
   const [editing, setEditing] = useState(false);
   const [currentCampaign, setCurrentCampaign] = useState(null);
+  const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
     retrieveCampaigns();
+    const user = AuthService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
+    }
   }, []);
 
   const retrieveCampaigns = () => {
@@ -34,7 +40,7 @@ const Campaigns = () => {
     let data = { title, description, cost };
 
     if (editing) {
-      CampaignService.updateCampaign(currentCampaign.id, title, description, cost)
+      CampaignService.updateCampaign(currentCampaign._id, data)
         .then((response) => {
           retrieveCampaigns();
           setEditing(false);
@@ -47,7 +53,7 @@ const Campaigns = () => {
           console.error(error);
         });
     } else {
-      CampaignService.createCampaign(title, description, cost)
+      CampaignService.createCampaign(data)
         .then((response) => {
           retrieveCampaigns();
           setTitle('');
@@ -60,13 +66,13 @@ const Campaigns = () => {
     }
   };
 
-  const editCampaign = (campaign) => {
-    setCurrentCampaign(campaign);
-    setEditing(true);
-    setTitle(campaign.title);
-    setDescription(campaign.description);
-    setCost(campaign.cost);
-  };
+const editCampaign = (campaign) => {
+  setCurrentCampaign(campaign);
+  setEditing(true);
+  setTitle(campaign?.title || '');
+  setDescription(campaign?.description || '');
+  setCost(campaign?.cost || '');
+};
 
   const deleteCampaign = (id) => {
     CampaignService.deleteCampaign(id)
@@ -81,75 +87,95 @@ const Campaigns = () => {
   return (
     <div className="container">
       <h1>Campaigns</h1>
-      <div>
-        <h2>{editing ? 'Edit' : 'Add'} Campaign</h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            saveCampaign();
-          }}
-        >
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              className="form-control"
-              id="title"
-              required
-              value={title}
-              onChange={handleInputChange}
-              name="title"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              required
-              value={description}
-              onChange={handleInputChange}
-              name="description"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="cost">Cost</label>
-            <input
-              type="text"
-              className="form-control"
-              id="cost"
-              required
-              value={cost}
-              onChange={handleInputChange}
-              name="cost"
-            />
-          </div>
-          <button className="btn btn-primary" type="submit">
-            {editing ? 'Update' : 'Save'}
-          </button>
-        </form>
-      </div>
+      {currentUser && (
+        <div>
+          <h2>{editing ? 'Edit' : 'Add'} Campaign</h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveCampaign();
+            }}
+          >
+            <div className="form-group">
+              <label htmlFor="title">Title</label>
+              <input
+                type="text"
+                className="form-control"
+                id="title"
+                required
+                value={title}
+                onChange={handleInputChange}
+                name="title"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description</label>
+              <input
+                type="text"
+                className="form-control"
+                id="description"
+                required
+                value={description}
+                onChange={handleInputChange}
+                name="description"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="cost">Cost</label>
+              <input
+                type="text"
+                className="form-control"
+                id="cost"
+                required
+                value={cost}
+                onChange={handleInputChange}
+                name="cost"
+              />
+            </div>
+            <button className="btn btn-primary" type="submit">
+              {editing ? 'Update' : 'Save'}
+            </button>
+          </form>
+        </div>
+      )}
       <div>
         <h2>Campaign List</h2>
         <ul className="list-group">
-          {campaigns.map((campaign) => (
+        {campaigns && campaigns.map((campaign) => (
             <li className="list-group-item" key={campaign._id}>
-              {campaign.title}
-              <button
-                className="btn btn-warning"
-                onClick={() => editCampaign(campaign)}
-              >
-                Edit
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={() => deleteCampaign(campaign._id)}
-              >
-                Delete
-              </button>
+                <div>
+                <strong>Title:</strong> {campaign.title}
+                </div>
+                <div>
+                <strong>Description:</strong> {campaign.description}
+                </div>
+                <div>
+                <strong>Cost:</strong> {campaign.cost}
+                </div>
+                {currentUser && (
+                <>
+                    <button
+                    className="btn btn-warning"
+                    onClick={() => editCampaign(campaign)}
+                    >
+                    Edit
+                    </button>
+                    <button
+                    className="btn btn-danger"
+                    onClick={() => deleteCampaign(campaign._id)}
+                    >
+                    Delete
+                    </button>
+                    <button
+                    className="btn btn-info"
+                    onClick={() => decreaseCost(campaign._id)}
+                    >
+                    Decrease Cost
+                    </button>
+                </>
+                )}
             </li>
-          ))}
+        ))}
         </ul>
       </div>
     </div>

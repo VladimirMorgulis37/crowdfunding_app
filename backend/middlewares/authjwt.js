@@ -22,66 +22,62 @@ verifyToken = (req, res, next) => {
     });
 };
 
-isAdmin = (req, res, next) => {
-    User.findById(req.userId).exec((err, user) => {
-        if (err) {
-            res.status(500).send({ message: "пенис" });
-            return;
+const isAdmin = (req, res, next) => {
+    User.findById(req.userId)
+      .exec()
+      .then(user => {
+        if (!user) {
+          return res.status(404).send({ message: "User not found" });
         }
-        Role.find (
-            {
-            _id: { $in: user.roles }
-            },
-            (err, roles) => {
-                if (err) {
-                    res.status(500).send({ message: "пенис" });
-                    return;
-                }
-
-                for (let i = 0; i < roles.length; i++) {
-                    if (roles[i].name === "admin") {
-                        next();
-                        return;
-                    }
-                }
-
-                res.status(403).send({ message: "Require Admin Role!" });
-                return;
-            }
-        );
-    });
-}
-
-isModerator = (req, res, next) => {
-    User.findById(req.userId).exec((err, user) => {
-        if (err) {
-            res.status(500).send({ message: "пенис" });
-            return;
+        return Role.find({
+          _id: { $in: user.roles }
+        }).exec();
+      })
+      .then(roles => {
+        if (!roles) {
+          throw new Error("Roles not found");
         }
-        Role.find (
-            {
-            _id: { $in: user.roles }
-            },
-            (err, roles) => {
-                if (err) {
-                    res.status(500).send({ message: "пенис" });
-                    return;
-                }
-
-                for (let i = 0; i < roles.length; i++) {
-                    if (roles[i].name === "moderator") {
-                        next();
-                        return;
-                    }
-                }
-
-                res.status(403).send({ message: "Require Moderator Role!" });
-                return;
-            }
-        );
-    });
-}
-
+  
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].name === "admin") {
+            return next();
+          }
+        }
+        return res.status(403).send({ message: "Require Admin Role!" });
+      })
+      .catch(err => {
+        res.status(500).send({ message: err.message || "Internal server error" });
+      });
+  };
+  
+  const isModerator = (req, res, next) => {
+    User.findById(req.userId)
+      .exec()
+      .then(user => {
+        if (!user) {
+          return res.status(404).send({ message: "User not found" });
+        }
+        return Role.find({
+          _id: { $in: user.roles }
+        }).exec();
+      })
+      .then(roles => {
+        if (!roles) {
+          throw new Error("Roles not found");
+        }
+  
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].name === "moderator") {
+            return next();
+          }
+        }
+        return res.status(403).send({ message: "Require Moderator Role!" });
+      })
+      .catch(err => {
+        res.status(500).send({ message: err.message || "Internal server error" });
+      });
+  };
+  
 const authJwt = {
     verifyToken,
     isAdmin,

@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AuthService from "../services/auth.service";
 
 const Profile = () => {
-  const currentUser = AuthService.getCurrentUser();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, []);
+
+  if (!currentUser) {
+    return <div>Loading...</div>; // или другой контент, пока пользователь не загрузился
+  }
 
   return (
     <div className="container">

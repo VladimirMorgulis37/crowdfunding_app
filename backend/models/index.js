@@ -6,7 +6,7 @@ db.mongoose = mongoose;
 
 db.user = require("./user.model"); // нам действительно нужны эти два файла
 db.role = require("./role.model");
-db.role = require("./campaign.model");
+db.campaign = require("./campaign.model");
 
 db.ROLES = ["user", "admin", "moderator"]; // задаём роли, всё верно.
 

@@ -1,17 +1,17 @@
 exports.allAccess = (req, res) => {
-    res.status(200).send("Public Content.");
+    res.status(200).send("Уровень доступа: публичный.");
 };
 
 exports.userBoard = (req, res) => {
-    res.status(200).send("User Content.");
+    res.status(200).send("Уровень доступа: пользовательский.");
 };
 
 exports.adminBoard = (req, res) => {
-    res.status(200).send("Admin Content.");
+    res.status(200).send("Уровень доступа: администраторский.");
 };
 
 exports.moderatorBoard = (req, res) => {
-    res.status(200).send("Moderator Content.");
+    res.status(200).send("Уровень доступа: модераторский.");
 };
 
 // прикольно

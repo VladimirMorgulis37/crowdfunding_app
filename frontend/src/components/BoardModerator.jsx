@@ -3,7 +3,6 @@ import UserService from "../services/user.service";
 
 const BoardModerator = () => {
   const [content, setContent] = useState("");
-
   useEffect(() => {
     UserService.getModeratorBoard().then(
       (response) => {

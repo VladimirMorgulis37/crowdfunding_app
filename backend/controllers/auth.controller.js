@@ -13,25 +13,14 @@ exports.signup = (req, res) => {
         password: bcrypt.hashSync(req.body.password, 8)
     });
 
-    user.save()
-    .then(savedUser => {
-      if (req.body.roles) {
-        return Role.find({ name: { $in: req.body.roles } });
-      } else {
-        return Role.findOne({ name: "user" });
-      }
-    })
+    Role.find({ name: { $in: req.body.roles || ["user"] } })
     .then(roles => {
-      if (!roles) {
-        throw new Error("Roles not found");
+      if (!roles || roles.length === 0) {
+        return Promise.reject(new Error("Roles not found"));
       }
-  
-      if (Array.isArray(roles)) {
-        user.roles = roles.map(role => role._id);
-      } else {
-        user.roles = [roles._id];
-      }
-  
+
+      user.roles = roles.map(role => role._id);
+
       return user.save();
     })
     .then(() => {
@@ -40,7 +29,7 @@ exports.signup = (req, res) => {
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
-}; // я робот, моя работа делать курсач
+};
 
 exports.signin = (req, res) => {
     User.findOne({

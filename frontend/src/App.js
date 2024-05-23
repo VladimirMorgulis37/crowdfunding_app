@@ -43,7 +43,7 @@ const App = () => {
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
-          bezKoder
+          Деньговыделятель.ру
         </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">

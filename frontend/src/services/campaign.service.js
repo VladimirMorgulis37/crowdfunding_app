@@ -3,8 +3,16 @@ import axios from 'axios';
 const API_URL = 'http://localhost:3001/api/campaigns/';
 
 const createCampaign = (title, description, cost) => {
-  return axios.post(API_URL, { title, description, cost });
-};
+    return axios.post(API_URL, {
+      title,
+      description,
+      cost
+    }, {
+      headers: {
+        'x-access-token': localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).accessToken : null
+      }
+    });
+  };
 
 const getAllCampaigns = () => {
   return axios.get(API_URL);
@@ -15,19 +23,44 @@ const getCampaignById = (id) => {
 };
 
 const updateCampaign = (id, title, description, cost) => {
-  return axios.put(API_URL + id, { title, description, cost });
+  return axios.put(API_URL + id, { title, description, cost }, {
+    headers: {
+      'x-access-token': localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).accessToken : null
+    }
+  });
 };
 
 const deleteCampaign = (id) => {
-  return axios.delete(API_URL + id);
+  return axios.delete(API_URL + id, {
+    headers: {
+      'x-access-token': localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).accessToken : null
+    }
+  });
 };
 
+const decreaseCost = (campaignId) => {
+    if (currentUser) {
+      CampaignService.decreaseCost(campaignId)
+        .then((response) => {
+          // Обновление списка кампаний после успешного уменьшения стоимости
+          retrieveCampaigns();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      // Добавить логику для обработки случая, когда пользователь не авторизован
+      console.log("Only authenticated users can decrease the cost.");
+    }
+  };
+  
 const CampaignService = {
   createCampaign,
   getAllCampaigns,
   getCampaignById,
   updateCampaign,
   deleteCampaign,
+  decreaseCost
 };
 
 export default CampaignService;

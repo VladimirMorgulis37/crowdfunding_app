@@ -1,20 +1,28 @@
-const express = require("express");
-const router = express.Router();
-const campaignController = require("../controllers/campaign.controller");
+const campaigns = require("../controllers/campaign.controller");
+const authJwt = require("../middlewares/authjwt");
 
 // Создание новой кампании
-router.post("/", campaignController.createCampaign);
+module.exports = function(app) {
+    app.use(function(req, res, next) {
+        res.header(
+            "Access-Control-Allow-Headers",
+            "x-access-token, Origin, Content-Type, Accept"
+        );
+        next();
+    });
 
-// Получение всех кампаний
-router.get("/", campaignController.getAllCampaigns);
+    // Create a new Campaign
+    app.post("/api/campaigns", [authJwt.verifyToken], campaigns.createCampaign);
 
-// Получение кампании по ID
-router.get("/:id", campaignController.getCampaignById);
+    // Retrieve all Campaigns
+    app.get("/api/campaigns", campaigns.getAllCampaigns);
 
-// Обновление кампании по ID
-router.put("/:id", campaignController.updateCampaign);
+    // Retrieve a single Campaign with id
+    app.get("/api/campaigns/:id", campaigns.getCampaignById);
 
-// Удаление кампании по ID
-router.delete("/:id", campaignController.deleteCampaign);
+    // Update a Campaign with id
+    app.put("/api/campaigns/:id", [authJwt.verifyToken], campaigns.updateCampaign);
 
-module.exports = router;
+    // Delete a Campaign with id
+    app.delete("/api/campaigns/:id", [authJwt.verifyToken], campaigns.deleteCampaign);
+};
