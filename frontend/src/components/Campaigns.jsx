@@ -166,12 +166,6 @@ const editCampaign = (campaign) => {
                     >
                     Delete
                     </button>
-                    <button
-                    className="btn btn-info"
-                    onClick={() => decreaseCost(campaign._id)}
-                    >
-                    Decrease Cost
-                    </button>
                 </>
                 )}
             </li>

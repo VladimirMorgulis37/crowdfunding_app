@@ -37,23 +37,7 @@ const deleteCampaign = (id) => {
     }
   });
 };
-
-const decreaseCost = (campaignId) => {
-    if (currentUser) {
-      CampaignService.decreaseCost(campaignId)
-        .then((response) => {
-          // Обновление списка кампаний после успешного уменьшения стоимости
-          retrieveCampaigns();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      // Добавить логику для обработки случая, когда пользователь не авторизован
-      console.log("Only authenticated users can decrease the cost.");
-    }
-  };
-  
+ 
 const CampaignService = {
   createCampaign,
   getAllCampaigns,
