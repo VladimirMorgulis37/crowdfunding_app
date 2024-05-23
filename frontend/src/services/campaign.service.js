@@ -37,14 +37,13 @@ const deleteCampaign = (id) => {
     }
   });
 };
- 
+
 const CampaignService = {
   createCampaign,
   getAllCampaigns,
   getCampaignById,
   updateCampaign,
-  deleteCampaign,
-  decreaseCost
+  deleteCampaign
 };
 
 export default CampaignService;
