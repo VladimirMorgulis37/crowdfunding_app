@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3001/api/auth/';
+const API_URL = 'https://backend-production-730c.up.railway.app/auth/';
 
 //  постим юзернейм, емейл, пароль, и серверная часть делает свою часть
 const register = (username, email, password) => {

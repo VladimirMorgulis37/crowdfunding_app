@@ -15,12 +15,10 @@ import BoardAdmin from "./components/BoardAdmin";
 import Campaigns from './components/Campaigns';
 
 const App = () => {
-  // State management for user roles and current user
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
 
-  // useEffect to load the current user on component mount
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
@@ -31,7 +29,6 @@ const App = () => {
     }
   }, []);
 
-  // Logout function to clear user session
   const logOut = () => {
     AuthService.logout();
     setCurrentUser(undefined);
