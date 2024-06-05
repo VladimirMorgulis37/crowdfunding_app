@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3001; // а портики уже настроены!
 
 var corsOptions = {
-  origin: "http://localhost:3002" // чтобы токо отсюда можно было принимать запросы
+  origin: "frontend-production-42ae.up.railway.app" // чтобы токо отсюда можно было принимать запросы
 }
 
 app.use(cors(corsOptions));
