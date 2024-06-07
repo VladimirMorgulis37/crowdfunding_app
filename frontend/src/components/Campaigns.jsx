@@ -15,14 +15,14 @@ const Campaigns = () => {
   useEffect(() => {
     retrieveCampaigns();
     const user = AuthService.getCurrentUser();
-    if (user && user.roles.includes('ROLE_ADMIN')) {
-      setIsAdmin(true);
-    }
     if (user) {
       setCurrentUser(user);
+      if (user.roles.includes('ROLE_ADMIN')) {
+        setIsAdmin(true);
+      }
     }
   }, []);
-
+  
   const retrieveCampaigns = () => {
     CampaignService.getAllCampaigns()
       .then((response) => {
@@ -154,41 +154,35 @@ const editCampaign = (campaign) => {
       <div>
         <h2>Campaign List</h2>
         <ul className="list-group">
-        {campaigns && campaigns.map((campaign) => (
+          {campaigns.map((campaign) => (
             <li className="list-group-item" key={campaign._id}>
-                <div>
-                <strong>Title:</strong> {campaign.title}
-                </div>
-                <div>
-                <strong>Description:</strong> {campaign.description}
-                </div>
-                <div>
-                <strong>Cost:</strong> {campaign.cost}
-                </div>
-                <button
+              <strong>{campaign.title}</strong>
+              <p>{campaign.description}</p>
+              <p>Cost: ${campaign.cost}</p>
+              <button
                 className="btn btn-success"
                 onClick={() => supportCampaign(campaign)}
-                >
+              >
                 Support (-$20)
-                </button>
-                {isAdmin && (
+              </button>
+              {isAdmin && (
                 <>
-                    <button
+                  <button
                     className="btn btn-warning"
                     onClick={() => editCampaign(campaign)}
-                    >
+                  >
                     Edit
-                    </button>
-                    <button
+                  </button>
+                  <button
                     className="btn btn-danger"
                     onClick={() => deleteCampaign(campaign._id)}
-                    >
+                  >
                     Delete
-                    </button>
+                  </button>
                 </>
-                )}
+              )}
             </li>
-        ))}
+          ))}
         </ul>
       </div>
     </div>
