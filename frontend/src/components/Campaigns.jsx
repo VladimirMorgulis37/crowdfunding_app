@@ -40,9 +40,8 @@ const Campaigns = () => {
     if (name === 'cost') {
       if (!isNaN(value) && Number(value) >= 0) {
         setCost(value);
-        setError('');
       } else {
-        setError('Некорретный ввод');
+        console.error('Некорректный ввод');
       }
     }
   }
