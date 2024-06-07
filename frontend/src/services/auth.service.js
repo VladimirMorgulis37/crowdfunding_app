@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const API_URL = 'https://backend-production-730c.up.railway.app/auth/';
+const API_URL = 'https://backend-production-730c.up.railway.app/api/auth/';
 
 //  постим юзернейм, емейл, пароль, и серверная часть делает свою часть
 const register = (username, email, password) => {
-    return axios.post(`https://backend-production-730c.up.railway.app/auth/signup`, {
+    return axios.post(API_URL + "signup", {
         username,
         email,
         password
@@ -14,7 +14,7 @@ const register = (username, email, password) => {
 // постим юзернейм и пароль, сохраняем инфу и JWT в local storage
 const login = (username, password) => {
     return axios
-    .post(API_URL + `https://backend-production-730c.up.railway.app/auth/signin`, {
+    .post(API_URL + "signin", {
         username,
         password
     })

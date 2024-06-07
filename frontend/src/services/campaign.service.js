@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://backend-production-730c.up.railway.app/campaigns/';
+const API_URL = 'https://backend-production-730c.up.railway.app/api/campaigns/';
 
 const createCampaign = (title, description, cost) => {
     return axios.post(API_URL, {
