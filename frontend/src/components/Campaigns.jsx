@@ -9,6 +9,7 @@ const Campaigns = () => {
   const [cost, setCost] = useState('');
   const [editing, setEditing] = useState(false);
   const [currentCampaign, setCurrentCampaign] = useState(null);
+  const [currentUser] = useState(undefined);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
