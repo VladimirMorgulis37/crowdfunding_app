@@ -37,8 +37,15 @@ const Campaigns = () => {
     const { name, value } = event.target;
     if (name === 'title') setTitle(value);
     if (name === 'description') setDescription(value);
-    if (name === 'cost') setCost(value);
-  };
+    if (name === 'cost') {
+      if (!isNaN(value) && Number(value) >= 0) {
+        setCost(value);
+        setError('');
+      } else {
+        setError('Некорретный ввод');
+      }
+    }
+  }
 
   const saveCampaign = () => {
     if (editing) {
@@ -99,10 +106,10 @@ const editCampaign = (campaign) => {
 
   return (
     <div className="container">
-      <h1>Campaigns</h1>
+      <h1>Кампании</h1>
       {currentUser && (
         <div>
-          <h2>{editing ? 'Edit' : 'Add'} Campaign</h2>
+          <h2>{editing ? 'Edit' : 'Add'} Кампания</h2>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -110,7 +117,7 @@ const editCampaign = (campaign) => {
             }}
           >
             <div className="form-group">
-              <label htmlFor="title">Title</label>
+              <label htmlFor="title">Название кампании</label>
               <input
                 type="text"
                 className="form-control"
@@ -122,7 +129,7 @@ const editCampaign = (campaign) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="description">Description</label>
+              <label htmlFor="description">Описание кампании</label>
               <input
                 type="text"
                 className="form-control"
@@ -134,7 +141,7 @@ const editCampaign = (campaign) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="cost">Cost</label>
+              <label htmlFor="cost">Требуемое кол-во денег</label>
               <input
                 type="text"
                 className="form-control"
@@ -152,7 +159,7 @@ const editCampaign = (campaign) => {
         </div>
       )}
       <div>
-        <h2>Campaign List</h2>
+        <h2>Список кампаний</h2>
         <ul className="list-group">
           {campaigns.map((campaign) => (
             <li className="list-group-item" key={campaign._id}>
@@ -163,7 +170,7 @@ const editCampaign = (campaign) => {
                 className="btn btn-success"
                 onClick={() => supportCampaign(campaign)}
               >
-                Support (-$20)
+                Поддержать (-$20)
               </button>
               {isAdmin && (
                 <>
@@ -171,13 +178,13 @@ const editCampaign = (campaign) => {
                     className="btn btn-warning"
                     onClick={() => editCampaign(campaign)}
                   >
-                    Edit
+                    Изменить
                   </button>
                   <button
                     className="btn btn-danger"
                     onClick={() => deleteCampaign(campaign._id)}
                   >
-                    Delete
+                    Удалить
                   </button>
                 </>
               )}

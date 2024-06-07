@@ -10,7 +10,7 @@ const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        Нужно заполнить это поле!
       </div>
     );
   }
@@ -20,7 +20,7 @@ const validEmail = (value) => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
-        This is not a valid email.
+        Емейл неправильный.
       </div>
     );
   }
@@ -30,7 +30,7 @@ const vusername = (value) => {
   if (value.length < 3 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters.
+        Юзернейм должен содержать от 3 до 20 символов.
       </div>
     );
   }
@@ -40,7 +40,7 @@ const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
     return (
       <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
+        Пароль должен содержать от 6 до 40 символов.
       </div>
     );
   }
@@ -113,7 +113,7 @@ const Register = () => {
           {!successful && (
             <div>
               <div className="form-group">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Никнейм</label>
                 <Input
                   type="text"
                   className="form-control"
@@ -137,7 +137,7 @@ const Register = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Пароль</label>
                 <Input
                   type="password"
                   className="form-control"
@@ -149,7 +149,7 @@ const Register = () => {
               </div>
 
               <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
+                <button className="btn btn-primary btn-block">Зарегистрироваться</button>
               </div>
             </div>
           )}
