@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://backend-production-730c.up.railway.app/api/campaigns/';
+const API_URL = 'https://backend-production-730c.up.railway.app/campaigns/';
 
 const createCampaign = (title, description, cost) => {
     return axios.post(API_URL, {
@@ -38,12 +38,19 @@ const deleteCampaign = (id) => {
   });
 };
 
+const supportCampaign = (id, cost) => {
+  return axios.put(API_URL + id, { cost },{ headers: {
+    'x-access-token': localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).accessToken : null }
+  });
+};
+
 const CampaignService = {
   createCampaign,
   getAllCampaigns,
   getCampaignById,
   updateCampaign,
-  deleteCampaign
+  deleteCampaign,
+  supportCampaign
 };
 
 export default CampaignService;

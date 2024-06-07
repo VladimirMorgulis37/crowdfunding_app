@@ -10,12 +10,13 @@ const Campaigns = () => {
   const [editing, setEditing] = useState(false);
   const [currentCampaign, setCurrentCampaign] = useState(null);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     retrieveCampaigns();
     const user = AuthService.getCurrentUser();
-    if (user) {
-      setCurrentUser(user);
+    if (user && user.roles.includes('ROLE_ADMIN')) {
+      setIsAdmin(true);
     }
   }, []);
 
@@ -37,10 +38,8 @@ const Campaigns = () => {
   };
 
   const saveCampaign = () => {
-    let data = { title, description, cost };
-
     if (editing) {
-      CampaignService.updateCampaign(currentCampaign._id, data)
+      CampaignService.updateCampaign(currentCampaign._id, title, description, cost)
         .then((response) => {
           retrieveCampaigns();
           setEditing(false);
@@ -53,7 +52,7 @@ const Campaigns = () => {
           console.error(error);
         });
     } else {
-      CampaignService.createCampaign(data)
+      CampaignService.createCampaign(title, description, cost)
         .then((response) => {
           retrieveCampaigns();
           setTitle('');
@@ -76,6 +75,17 @@ const editCampaign = (campaign) => {
 
   const deleteCampaign = (id) => {
     CampaignService.deleteCampaign(id)
+      .then((response) => {
+        retrieveCampaigns();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const supportCampaign = (campaign) => {
+    const newCost = Math.max(0, campaign.cost - 20);
+    CampaignService.supportCampaign(campaign._id, newCost)
       .then((response) => {
         retrieveCampaigns();
       })
@@ -152,7 +162,13 @@ const editCampaign = (campaign) => {
                 <div>
                 <strong>Cost:</strong> {campaign.cost}
                 </div>
-                {currentUser && (
+                <button
+                className="btn btn-success"
+                onClick={() => supportCampaign(campaign)}
+                >
+                Support (-$20)
+                </button>
+                {isAdmin && (
                 <>
                     <button
                     className="btn btn-warning"
