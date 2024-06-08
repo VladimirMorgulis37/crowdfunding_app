@@ -108,7 +108,7 @@ const editCampaign = (campaign) => {
       <h1>Кампании</h1>
       {currentUser && (
         <div>
-          <h2>{editing ? 'Edit' : 'Add'} Кампания</h2>
+          <h2>{editing ? 'Edit' : 'Создать'} Кампанию</h2>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -152,7 +152,7 @@ const editCampaign = (campaign) => {
               />
             </div>
             <button className="btn btn-primary" type="submit">
-              {editing ? 'Update' : 'Save'}
+              {editing ? 'Update' : 'Создать'}
             </button>
           </form>
         </div>
@@ -164,7 +164,7 @@ const editCampaign = (campaign) => {
             <li className="list-group-item" key={campaign._id}>
               <strong>{campaign.title}</strong>
               <p>{campaign.description}</p>
-              <p>Cost: ${campaign.cost}</p>
+              <p>Требуемое кол-во: ${campaign.cost}</p>
               <button
                 className="btn btn-success"
                 onClick={() => supportCampaign(campaign)}
